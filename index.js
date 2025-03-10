@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const todoHandler = require('./routHandler/todoHandler')
+
+
 
 const app = express();
 
