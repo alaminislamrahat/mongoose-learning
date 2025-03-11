@@ -6,12 +6,31 @@ const Todo = new mongoose.model("Todo", todoSchema);
 
 //get all todos
 router.get('/', async (req, res) => {
+    try {
+        const result = await Todo.find({ status: 'active' }).select({ _id: 0 }).limit(2)
 
+        res.status(200).json({
+            message: "Todo was inserted successfully",
+            result: result
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: "There was a server-side error"
+        });
+    }
 })
 //get a todo
 router.get('/:id', async (req, res) => {
-
-})
+    try {
+        const result = await Todo.findOne({ _id: req.params.id }); // Add "await" here
+        if (!result) {
+            return res.status(404).json({ error: 'Todo not found' });
+        }
+        res.json(result);
+    } catch (err) {
+        res.status(500).json({ error: 'There was an error' });
+    }
+});
 //post a todo
 router.post('/', async (req, res) => {
     try {
@@ -43,20 +62,20 @@ router.post('/all', async (req, res) => {
 })
 //put  todo
 router.put('/:id', async (req, res) => {
-try{
-    const result = await Todo.findByIdAndUpdate({_id : req.params.id},{
-        status : "inactive"
-    },{new : true})
-    res.status(200).json({
-        message: "Todo was inserted successfully"
-    });
-    console.log(result)
-}
-catch (err) {
-    res.status(500).json({
-        error: "There was a server-side error"
-    });
-}
+    try {
+        const result = await Todo.findByIdAndUpdate({ _id: req.params.id }, {
+            status: "inactive"
+        }, { new: true })
+        res.status(200).json({
+            message: "Todo was inserted successfully"
+        });
+        console.log(result)
+    }
+    catch (err) {
+        res.status(500).json({
+            error: "There was a server-side error"
+        });
+    }
 
 })
 //delete a todo
