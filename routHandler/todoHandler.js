@@ -43,7 +43,20 @@ router.post('/all', async (req, res) => {
 })
 //put  todo
 router.put('/:id', async (req, res) => {
-
+try{
+    const result = await Todo.findByIdAndUpdate({_id : req.params.id},{
+        status : "inactive"
+    },{new : true})
+    res.status(200).json({
+        message: "Todo was inserted successfully"
+    });
+    console.log(result)
+}
+catch (err) {
+    res.status(500).json({
+        error: "There was a server-side error"
+    });
+}
 
 })
 //delete a todo
