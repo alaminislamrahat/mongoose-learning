@@ -16,5 +16,12 @@ const todoSchema = mongoose.Schema({
     }
 });
 
+// custom instance method
+todoSchema.methods = {
+    findActives : ()=>{
+        return mongoose.model("Todo").find({status : 'inactive'})
+    }
+}
+
 
 module.exports = todoSchema;

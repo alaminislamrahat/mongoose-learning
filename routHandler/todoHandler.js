@@ -19,6 +19,13 @@ router.get('/', async (req, res) => {
         });
     }
 })
+
+// get active todos
+router.get('/active', async (req, res) => {
+    const todo = new Todo();
+    const data = await todo.findActives();
+    res.json({data})
+})
 //get a todo
 router.get('/:id', async (req, res) => {
     try {
@@ -80,7 +87,13 @@ router.put('/:id', async (req, res) => {
 })
 //delete a todo
 router.delete('/:id', async (req, res) => {
-
+    try {
+      await Todo.deleteOne({ _id: req.params.id }); // Add "await" here
+       
+        res.json({message : 'deleted'});
+    } catch (err) {
+        res.status(500).json({ error: 'There was an error' });
+    }
 })
 
 module.exports = router;
